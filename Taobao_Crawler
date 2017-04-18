@@ -1,0 +1,39 @@
+# Taobao data crawler
+
+import json
+from Download import dl
+from urllib.parse import urlencode
+
+def getUrl(page, keyword):
+    start_url = 'https://s.taobao.com/api?'
+    add_dict = {
+        '_ksTS': '1492391041115_231',
+        'ajax': 'true',
+        'm': 'customized',
+        'rn': 'fcb53e078ddd635d41aa048a8a671207',
+        'q': keyword,
+        'ie': 'utf8',
+        's': page,
+        'bcoffset': 0
+    }
+    return start_url + urlencode(add_dict)
+
+def get(keyword):
+    for page in range(0, 1000, 10):
+        print('[Catching]。。。 page: ', page)
+        data = json.loads(dl.GetHtml(getUrl(page, keyword)))
+        if data and data['API.CustomizedApi']['itemlist']['auctions']:
+            for item in data['API.CustomizedApi']['itemlist']['auctions']:
+                detail_url = 'http:' + item['detail_url']
+                detail_title = item['raw_title']
+                store_name = item['nick']
+                if item['icon']:
+                    store = item['icon'][0]['innerText']
+                else:
+                    store = '普通淘宝'
+                sales_volume = item['view_sales']
+                price = item['view_price']
+                print(store, store_name, detail_title, price, sales_volume, detail_url)
+
+if __name__ == '__main__':
+    get(input('input keyword: '))
