@@ -1,5 +1,5 @@
 # coding=utf-8
-# Download 1.0.2
+# Download 1.0.3
 # Downlod html file module by Aston5128
 
 import requests
@@ -40,28 +40,22 @@ class download:
         self.ip_list = [re.sub('\n', ' ', ip).strip() for ip in ip_listn]
         # self.ip_list = ['123.233.123.555']
 
-    def ChoseUA(self):
-        print('[Selecting User-Agint]。。。')
-        return {'User-Agint': random.choice(self.user_agint_list)}
-
-    def ChoseIP(self):
-        return random.choice(self.ip_list)
-
     def TryUrl(self, url, time_out, proxy, num_retries):
         if num_retries > 0:
             print('[Catching]。。。Spider at 6 second：Reciprocal{0}times'.format(num_retries))
             time.sleep(6)
             return self.GetHtml(url, time_out, proxy, num_retries - 1)
         else:
-            i_p = self.ChoseIP()
+            i_p = random.choice(self.ip_list)
             proxy = {'http': i_p}
             print('[Proxy IP invalid]。。。Changing IP，new IP：' + i_p)
             return self.GetHtml(url, time_out, proxy=proxy)
 
     def GetHtml(self, url, time_out=3, proxy=None, num_retries=6):
-        header = self.ChoseUA()
+        print('[Selecting User-Agint]。。。')
+        header = {'User-Agint': random.choice(self.user_agint_list)}
         try:
-            print('[Catching]。。。Proxy IP：', proxy)
+            print('[Catching]。。。Proxy IP：', proxy, ' url: ' + url)
             return requests.get(url, headers=header, timeout=time_out).text
         except:
             print('[Failed]。。。Proxy IP：', proxy)
