@@ -6,3 +6,5 @@ Updatatime：18/4/2017 10:29 by Aston5128
 Href: http://s.taobao.com/
 
 System: Code on MacOS Sierra 10.12.1
+
+Python Version: 3.6.1
